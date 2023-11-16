@@ -1,0 +1,192 @@
+openapi: 3.0.0
+x-stoplight:
+  id: um0xi0m2fvzi0
+info:
+  title: application_management
+  version: '1.0'
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  '/users/{userId}':
+    parameters:
+      - schema:
+          type: integer
+        name: userId
+        in: path
+        required: true
+        description: user ID
+    get:
+      summary: ユーザー取得
+      operationId: get-users-userId
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              examples:
+                Example 1:
+                  value:
+                    id: 0
+                    name: string
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: integer
+                    x-stoplight:
+                      id: 2wfq8q9p37hiz
+                  errorMsg:
+                    type: string
+                    x-stoplight:
+                      id: 9ad70g91xkzev
+  /applications:
+    get:
+      summary: 申請一覧
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Application'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: integer
+                    x-stoplight:
+                      id: af5pt6whipjrn
+                  errorMsg:
+                    type: string
+                    x-stoplight:
+                      id: zzp94xgljw360
+      operationId: get-applications
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: large_type
+          description: 申請種別ID 1.遅刻早退外出/2.有給代休欠勤/3.支払い交通費
+components:
+  schemas:
+    User:
+      title: User
+      x-stoplight:
+        id: p3dsxo9s354pw
+      type: object
+      properties:
+        id:
+          type: integer
+          x-stoplight:
+            id: e65ki46crreh0
+        name:
+          type: string
+          x-stoplight:
+            id: 4g7hzzh6zcya8
+        mail:
+          type: string
+          x-stoplight:
+            id: 8ygq1tk7bspfm
+        password:
+          type: string
+          x-stoplight:
+            id: iekgzpd2hxtqw
+      required:
+        - id
+      x-examples:
+        Example 1:
+          id: 1
+          name: test
+          mail: test@test.com
+          password: 123abc
+      description: ''
+    Application:
+      title: Application
+      x-stoplight:
+        id: gtlzhcysd8e97
+      type: object
+      properties:
+        id:
+          type: integer
+          x-stoplight:
+            id: sfc2zqzdxx2sw
+        largeType:
+          x-stoplight:
+            id: jvyvw86rly5el
+          type: integer
+          description: |-
+            1.遅刻早退外出
+            2.有給代休欠勤
+            3.支払い交通費
+        mediumType:
+          x-stoplight:
+            id: zr4xm1619r6mn
+          type: integer
+          description: |-
+            1.遅刻
+            2.早退
+            3.外出
+            4.有給
+            5.代休
+            6.欠勤
+            7.支払い
+            8.交通費
+        submissionDate:
+          type: string
+          x-stoplight:
+            id: 9xvrcn166rtf2
+          format: date-time
+        applicationPeriod:
+          type: string
+          x-stoplight:
+            id: z8lxhbayeyvjh
+        management:
+          x-stoplight:
+            id: l6ofkgao2en3u
+          enum:
+            - Pending
+            - Approved
+        president:
+          x-stoplight:
+            id: sxdspo2dej2or
+          enum:
+            - Pending
+            - Approved
+        departmentHead:
+          x-stoplight:
+            id: rw7djvzdvax5w
+          enum:
+            - Pending
+            - Approved
+      required:
+        - id
+        - largeType
+        - mediumType
+        - submissionDate
+        - management
+        - president
+        - departmentHead
+      x-examples:
+        休暇:
+          id: 1
+          largeType: 1
+          mediumType: 1
+          submissionDate: '2019-08-24T14:15:22Z'
+          applicationPeriod: 2019-08-24 - 2019-08-24
+          management: Approved
+          president: Pending
+          departmentHead: Pending
+      description: ''
